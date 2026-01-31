@@ -1107,7 +1107,7 @@ const Footer = () => {
                 </svg>
               </div> */}
               <img
-                src={"/icons/ic_header_shije_vere.png"}
+                src={"/ic_header_shije_vere.png"}
                 alt="Your Logo"
                 style={{ height: 65, margin: "2px" }}
               />
