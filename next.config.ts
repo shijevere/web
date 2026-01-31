@@ -1,6 +1,6 @@
 const nextConfig = {
   output: 'export',
-  basePath: '',
+  basePath: '/web',
   images: { unoptimized: true }
 }
 
