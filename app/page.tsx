@@ -50,7 +50,7 @@ const Navigation = () => {
               Shije <span className="text-cyan-500">Vere</span>
             </span> */}
             <img
-              src={"/icons/ic_header_shije_vere.png"}
+              src={"/web/ic_header_shije_vere.png"}
               alt="Your Logo"
               style={{ height: 65, margin: "2px" }}
             />
