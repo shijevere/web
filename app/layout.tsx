@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "sq_AL",
     url: "https://shijevere.com",
-    siteName: "Shije Vere",
+    siteName: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
     title: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
     description:
       "Transformoni biznesin tuaj të plazhit me menunë dixhitale. Klientët porosisin direkt nga çadra. Rritni shitjet deri në 30x këtë verë!",
@@ -130,11 +130,11 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 
   // App specific
-  applicationName: "Shije Vere",
+  applicationName: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Shije Vere",
+    title: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
   },
   formatDetection: {
     telephone: true,
@@ -217,7 +217,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Organization",
-              name: "Shije Vere",
+              name: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
               alternateName: "ShijeVere",
               url: "https://shijevere.com",
               logo: "https://shijevere.com/ic_header_shije_vere.png",
@@ -259,7 +259,7 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "SoftwareApplication",
-              name: "Shije Vere",
+              name: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
               applicationCategory: "BusinessApplication",
               operatingSystem: "Web",
               offers: {
@@ -296,7 +296,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               "@id": "https://shijevere.com",
-              name: "Shije Vere",
+              name: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
               image: "https://shijevere.com/ic_header_shije_vere.png",
               telephone: "+355-68-33-03-005",
               email: "shijevere@gmail.com",
