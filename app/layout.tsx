@@ -238,7 +238,7 @@ export default function RootLayout({
               contactPoint: [
                 {
                   "@type": "ContactPoint",
-                  telephone: "+355-68-33-03-005",
+                  telephone: "+355-68-44-69-161",
                   contactType: "customer service",
                   availableLanguage: ["Albanian", "English"],
                   areaServed: "AL",
@@ -246,7 +246,7 @@ export default function RootLayout({
               ],
               sameAs: [
                 "https://www.instagram.com/shijevere.al/",
-                "https://wa.me/355683303005",
+                "https://wa.me/355684469161",
               ],
             }),
           }}
@@ -298,7 +298,7 @@ export default function RootLayout({
               "@id": "https://shijevere.com",
               name: "Shije Vere | Menu Dixhitale për Plazhe në Shqipëri",
               image: "https://shijevere.com/ic_header_shije_vere.png",
-              telephone: "+355-68-33-03-005",
+              telephone: "+355-68-44-69-161",
               email: "shijevere@gmail.com",
               address: {
                 "@type": "PostalAddress",

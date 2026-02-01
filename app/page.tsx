@@ -945,7 +945,7 @@ const ContactSection = () => {
               </div>
 
               <a
-                href="https://wa.me/355683303005"
+                href="https://wa.me/355684469161"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md hover:bg-green-50 transition-all cursor-pointer"
@@ -1249,7 +1249,7 @@ const Footer = () => {
                 </svg>
               </a>
               <a
-                href="https://wa.me/355683303005"
+                href="https://wa.me/355684469161"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-green-500 transition-all"
