@@ -379,7 +379,7 @@ const StatsSection = () => {
     { value: "890%", label: "Rritje në Porosi", icon: "📈" },
     { value: "50+", label: "Biznese Plazhi", icon: "🏖️" },
     { value: "< 2min", label: "Koha e Instalimit", icon: "⚡" },
-    { value: "4", label: "Gjuhë të Huaja", icon: "🌍" },
+    { value: "3", label: "Gjuhë", icon: "🌍" },
   ];
 
   return (
@@ -858,25 +858,41 @@ const CTASection = () => {
 
 // Contact Form Section
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    company: "",
-    phone: "",
-    umbrellas: "",
-    message: "",
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: { target: { name: string; value: unknown } }) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    alert(
-      "Faleminderit për kërkesën tuaj! Do t'ju përgjigjemi brenda 30 minutash.",
-    );
+    setIsSubmitting(true);
+    setError(null);
+
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xbdkoapy", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        form.reset();
+      } else {
+        const data = await response.json();
+        throw new Error(data.error || "Something went wrong");
+      }
+    } catch (err) {
+      setError(
+        "Gabim gjatë dërgimit. Ju lutem provoni përsëri ose na kontaktoni në WhatsApp.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -928,7 +944,12 @@ const ContactSection = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
+              <a
+                href="https://wa.me/355683303005"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md hover:bg-green-50 transition-all cursor-pointer"
+              >
                 <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                   <svg
                     className="w-6 h-6 text-green-600"
@@ -945,14 +966,15 @@ const ContactSection = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-800">
-                    Suport në WhatsApp
-                  </p>
+                  <p className="font-semibold text-slate-800">Tel (WhatsApp)</p>
                   <p className="text-sm text-slate-500">+355 68 33 03 005</p>
                 </div>
-              </div>
+              </a>
 
-              <div className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm">
+              <a
+                href="mailto:shijevere@gmail.com"
+                className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-sm hover:shadow-md hover:bg-purple-50 transition-all cursor-pointer"
+              >
                 <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                   <svg
                     className="w-6 h-6 text-purple-600"
@@ -972,119 +994,178 @@ const ContactSection = () => {
                   <p className="font-semibold text-slate-800">Na Shkruani</p>
                   <p className="text-sm text-slate-500">shijevere@gmail.com</p>
                 </div>
-              </div>
+              </a>
             </div>
           </div>
 
           {/* Right Content - Form */}
           <div className="bg-white rounded-3xl shadow-xl p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Emri i Plotë
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
-                    placeholder="Emri Mbiemri"
-                    required
-                  />
+            {isSubmitted ? (
+              // Success Message
+              <div className="h-full flex flex-col items-center justify-center text-center py-12">
+                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+                  <svg
+                    className="w-10 h-10 text-green-500"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
-                    placeholder="email@shembull.com"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Emri i Biznesit
-                  </label>
-                  <input
-                    type="text"
-                    name="company"
-                    value={formData.company}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
-                    placeholder="Paradise Beach Bar"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Numri i Telefonit
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
-                    placeholder="+355 68 123 4567"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Sa çadra keni?
-                </label>
-                <select
-                  name="umbrellas"
-                  value={formData.umbrellas}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors bg-white"
-                  required
+                <h3 className="text-2xl font-bold text-slate-800 mb-2">
+                  Faleminderit!
+                </h3>
+                <p className="text-slate-500 mb-6">
+                  Kërkesa juaj u dërgua me sukses. Do t&apos;ju kontaktojmë
+                  brenda 30 minutash.
+                </p>
+                <button
+                  onClick={() => setIsSubmitted(false)}
+                  className="text-cyan-500 hover:text-cyan-600 font-medium"
                 >
-                  <option value="">Zgjidhni...</option>
-                  <option value="1-50">1 - 50 çadra</option>
-                  <option value="51-100">51 - 100 çadra</option>
-                  <option value="101-200">101 - 200 çadra</option>
-                  <option value="200+">200+ çadra</option>
-                </select>
+                  Dërgo një kërkesë tjetër
+                </button>
               </div>
+            ) : (
+              // Form
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {error && (
+                  <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+                    {error}
+                  </div>
+                )}
 
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
-                  Mesazh (Opsionale)
-                </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors resize-none"
-                  placeholder="Na tregoni për biznesin tuaj të plazhit..."
-                />
-              </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Emri i Plotë
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
+                      placeholder="Emri Mbiemri"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
+                      placeholder="email@shembull.com"
+                      required
+                    />
+                  </div>
+                </div>
 
-              <button
-                type="submit"
-                className="w-full py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-cyan-500/30 hover:-translate-y-0.5 transition-all duration-300"
-              >
-                Dërgo Kërkesën
-              </button>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Emri i Biznesit
+                    </label>
+                    <input
+                      type="text"
+                      name="company"
+                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
+                      placeholder="Paradise Beach Bar"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Numri i Telefonit
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors"
+                      placeholder="+355 68 123 4567"
+                      required
+                    />
+                  </div>
+                </div>
 
-              <p className="text-center text-sm text-slate-500">
-                Duke dërguar, pranoni Kushtet & Politikën e Privatësisë
-              </p>
-            </form>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Sa çadra keni?
+                  </label>
+                  <select
+                    name="umbrellas"
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors bg-white"
+                    required
+                  >
+                    <option value="">Zgjidhni...</option>
+                    <option value="1-50">1 - 50 çadra</option>
+                    <option value="51-100">51 - 100 çadra</option>
+                    <option value="101-200">101 - 200 çadra</option>
+                    <option value="200+">200+ çadra</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Mesazh (Opsionale)
+                  </label>
+                  <textarea
+                    name="message"
+                    rows={4}
+                    className="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:border-cyan-500 focus:outline-none transition-colors resize-none"
+                    placeholder="Na tregoni për biznesin tuaj të plazhit..."
+                  />
+                </div>
+
+                {/* Honeypot field for spam protection */}
+                <input type="text" name="_gotcha" style={{ display: "none" }} />
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`w-full py-4 bg-gradient-to-r from-cyan-500 to-teal-500 text-white font-bold rounded-xl transition-all duration-300 ${
+                    isSubmitting
+                      ? "opacity-70 cursor-not-allowed"
+                      : "hover:shadow-lg hover:shadow-cyan-500/30 hover:-translate-y-0.5"
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                          fill="none"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
+                      </svg>
+                      Duke dërguar...
+                    </span>
+                  ) : (
+                    "Dërgo Kërkesën"
+                  )}
+                </button>
+
+                <p className="text-center text-sm text-slate-500">
+                  Duke dërguar, pranoni Kushtet & Politikën e Privatësisë
+                </p>
+              </form>
+            )}
           </div>
         </div>
       </div>
@@ -1101,51 +1182,87 @@ const Footer = () => {
           {/* Brand */}
           <div className="md:col-span-2">
             <div className="flex items-center gap-3 mb-4">
-              {/* <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-teal-500 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-                </svg>
-              </div> */}
               <img
                 src={"/ic_header_shije_vere.png"}
-                alt="Your Logo"
+                alt="Shije Vere Logo"
                 style={{ height: 65, margin: "2px" }}
               />
-              {/* <span className="text-xl font-bold">
-                Beach<span className="text-cyan-400">Menus</span>
-              </span> */}
             </div>
             <p className="text-slate-400 max-w-sm mb-6">
               Transformojmë bizneset e plazhit me zgjidhje dixhitale të
               porosive. Rrisni shitjet dhe kënaqni klientët tuaj.
             </p>
-            <div className="flex gap-4">
-              {["instagram"].map((social) => (
-                <a
-                  key={social}
-                  href="https://www.instagram.com/shijevere.al/"
-                  className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-cyan-500 transition-colors"
-                >
-                  <span className="sr-only">{social}</span>
-                  <svg
-                    className="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                  </svg>
 
-                  {/* {social === "facebook" ? (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2C6.477 2 2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.879V14.89h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.989C18.343 21.129 22 16.99 22 12c0-5.523-4.477-10-10-10z" />
-                    </svg>
-                  ) : (
-                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-                    </svg>
-                  )} */}
-                </a>
-              ))}
+            {/* Contact Info */}
+            <div className="space-y-3 mb-6">
+              <a
+                href="https://wa.me/355683303005"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-3 text-slate-400 hover:text-green-400 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+                <span>+355 68 33 03 005</span>
+              </a>
+              <a
+                href="mailto:shijevere@gmail.com"
+                className="flex items-center gap-3 text-slate-400 hover:text-cyan-400 transition-colors"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                  />
+                </svg>
+                <span>shijevere@gmail.com</span>
+              </a>
+            </div>
+
+            {/* Social Links */}
+            <div className="flex gap-4">
+              <a
+                href="https://www.instagram.com/shijevere.al/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-gradient-to-br hover:from-purple-500 hover:to-pink-500 transition-all"
+              >
+                <span className="sr-only">Instagram</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </a>
+              <a
+                href="https://wa.me/355683303005"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-10 h-10 bg-slate-800 rounded-lg flex items-center justify-center hover:bg-green-500 transition-all"
+              >
+                <span className="sr-only">WhatsApp</span>
+                <svg
+                  className="w-5 h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                </svg>
+              </a>
             </div>
           </div>
 
@@ -1183,7 +1300,10 @@ const Footer = () => {
             <h3 className="font-semibold mb-4">Kompania</h3>
             <ul className="space-y-3 text-slate-400">
               <li>
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a
+                  href="/about"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Rreth Nesh
                 </a>
               </li>
@@ -1196,12 +1316,18 @@ const Footer = () => {
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a
+                  href="/privacy"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Politika e Privatësisë
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-cyan-400 transition-colors">
+                <a
+                  href="/terms"
+                  className="hover:text-cyan-400 transition-colors"
+                >
                   Kushtet e Shërbimit
                 </a>
               </li>
