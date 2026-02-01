@@ -12,7 +12,7 @@ const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -295,7 +295,7 @@ const HeroSection = () => {
           </div>
 
           {/* Right Content - Phone Mockup */}
-          <div className="relative flex justify-center lg:justify-end">
+          <div className="relative flex justify-center lg:justify-center">
             <div className="relative">
               {/* Decorative Elements */}
               <div className="absolute -top-8 -left-8 w-24 h-24 bg-gradient-to-br from-amber-300 to-orange-400 rounded-3xl rotate-12 opacity-80" />
@@ -317,7 +317,7 @@ const HeroSection = () => {
 
               {/* Floating Elements */}
               <div
-                className="absolute -left-16 top-1/4 bg-white rounded-2xl shadow-xl p-4 animate-bounce hidden lg:block"
+                className="absolute -left-16 top-1/4 bg-white rounded-2xl shadow-xl p-3 animate-bounce hidden lg:block"
                 style={{ animationDuration: "3s" }}
               >
                 <div className="flex items-center gap-3">
@@ -346,7 +346,7 @@ const HeroSection = () => {
               </div>
 
               <div
-                className="absolute -right-12 bottom-1/3 bg-white rounded-2xl shadow-xl p-4 animate-bounce hidden lg:block"
+                className="absolute -right-10 bottom-1/3 bg-white rounded-2xl shadow-xl p-3 animate-bounce hidden lg:block"
                 style={{ animationDuration: "4s", animationDelay: "1s" }}
               >
                 <div className="flex items-center gap-2">
