@@ -309,10 +309,10 @@ const TermsOfServicePage = () => {
                   <p>
                     <strong>WhatsApp:</strong>{" "}
                     <a
-                      href="https://wa.me/355683303005"
+                      href="https://wa.me/355684469161"
                       className="text-amber-600 hover:underline"
                     >
-                      +355 68 33 03 005
+                      +355 68 44 69 161
                     </a>
                   </p>
                 </div>
