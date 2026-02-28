@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { Alert, Container, Link, Tab, Tabs, styled } from "@mui/material";

@@ -148,7 +148,6 @@ const OrderItem = ({
         }}
       >
         <StepCount
-          idx={index}
           value={quantity}
           onStepValueChange={stepOnChangeHandler}
           enableDelete

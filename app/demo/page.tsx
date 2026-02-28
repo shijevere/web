@@ -37,18 +37,20 @@ import {
   Grid,
   Menu as MuiMenu,
   Typography,
+  ThemeProvider,
 } from "@mui/material";
 import Image from "next/image";
 import MenuPrime from "../components/MenuPrime";
+import theme from "../theme";
 // import MenuPrime from "components/MenuPrime";
 
 const business: any = businessData;
 const MenuPageContent: NextPage = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const cart = useSelector((state) => state.cart);
+  const cart = useSelector((state: any) => state.cart);
 
-  const [open, setOpen] = useState(!cart?.items);
+  const [open, setOpen] = useState<any>(!cart?.items);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [callWaiterOpen, setCallWaiterOpen] = useState(false);
@@ -95,6 +97,7 @@ const MenuPageContent: NextPage = () => {
     if (!Object.values(cart?.items)?.length) {
       setOpen(false);
     }
+
     return () => {};
   }, [cart?.items]);
 
@@ -154,7 +157,7 @@ const MenuPageContent: NextPage = () => {
   );
   const sliderBg = theme?.sliderBg ?? defaultMenu.sliderBg;
   const productBackground =
-    theme?.productBackground ?? defaultMenu.productBackground;
+    business?.theme?.productBackground ?? defaultMenu.productBackground;
   const [paymentMethod, setPaymentMethod] = useState("CASH");
 
   // if (business?.available)
@@ -182,6 +185,9 @@ const MenuPageContent: NextPage = () => {
         onClickHandler={onMenuClickHandler}
         selectedTabUrlValue={"drinks"}
         background={sliderBg}
+        primaryColor={business?.theme?.primaryColor}
+        showAlert={false}
+        font={business?.theme?.font}
       />
       {/* <Menu
         isDemo
@@ -331,9 +337,11 @@ const MenuPageContent: NextPage = () => {
 
 const MenuPage = () => {
   return (
-    <Provider store={store}>
-      <MenuPageContent />
-    </Provider>
+    <ThemeProvider theme={theme}>
+      <Provider store={store}>
+        <MenuPageContent />
+      </Provider>
+    </ThemeProvider>
   );
 };
 

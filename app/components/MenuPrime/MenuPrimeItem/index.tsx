@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useCallback } from "react";
 // import { StyledText } from 'components/BaseComponents/StyledText';
 import PropTypes from "prop-types";
@@ -42,23 +43,24 @@ const StyledDescription = styled(Typography)({
   lineHeight: "16px",
 });
 
-const MenuPrimeItem = ({
-  name,
-  description,
-  imageUrl,
-  index,
-  quantity,
-  price,
-  onCountChange,
-  orderingEnabled,
-  readonly,
-  background,
-  totalBg,
-}: // animationDelay,
-// promoId,
-// discount,
-// addedByPromo,
-any) => {
+const MenuPrimeItem = (
+  {
+    name,
+    description,
+    imageUrl,
+    index,
+    quantity,
+    price,
+    onCountChange,
+    orderingEnabled,
+    readonly,
+    background,
+    totalBg,
+  }: any, // animationDelay,
+  // promoId,
+  // discount,
+  // addedByPromo,
+) => {
   const [open, setOpen] = React.useState(false);
   const { t } = useTranslation();
   // const [isRemoveDialogOpen, setIsRemoveDialogOpen] = useState(false);
@@ -217,7 +219,6 @@ any) => {
           >
             {orderingEnabled && !readonly && (
               <StepCountPrime
-                idx={index}
                 value={quantity}
                 onStepValueChange={stepOnChangeHandler}
                 enableDelete
